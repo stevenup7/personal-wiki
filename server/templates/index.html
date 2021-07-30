@@ -1,0 +1,12 @@
+{% extends "default.html" %}
+{% block title %}Wiki Index{% endblock %}
+{% block content %}
+<div>
+  {{ index_content | safe }}
+</div>
+<ul class="uk-list">
+{% for page in file_list %}
+<li><a class="wiki-link" href="content/{{page}}"><span uk-icon="icon: comment" ></span> {{page}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

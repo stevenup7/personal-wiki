@@ -1,0 +1,17 @@
+{
+  "name": "wikiui",
+  "version": "0.5.0",
+  "description": "a personal wiki",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "steven@upritchard.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "showdown": "^1.9.1",
+    "uikit": "^3.7.1",
+    "vue": "^2.6.14"
+  }
+}

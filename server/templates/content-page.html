@@ -1,0 +1,74 @@
+{% extends "default.html" %}
+{% block title %}Content Page - {{page_name}}{% endblock %}
+{% block content %}
+
+<!-- Tabs -->
+<ul uk-tab class="uk-flex-right" id="tabController">
+  <li class="uk-active"><a href="#">View</a></li>
+  <li><a href="#">Edit</a></li>
+  <li><a href="#">Help</a></li>
+</ul>
+<!-- Switchable is the tab contents  -->
+<ul class="uk-switcher uk-margin" id="editor">
+  <li>
+    <div id="page-content" v-html="htmlContent"></div>
+  </li>
+  <li>
+
+    <textarea id="editbox" rows="25" v-model="markdownContent">{{content}}</textarea>
+    <span class="uk-label uk-label-warning" v-if="!saveFlag">Unsaved</span>
+  </li>
+  <li>
+    <h2>Help</h2>
+    <dl class="uk-description-list not-all-caps">
+
+      <dt>camelCaseWord</dt>
+      <dd>auto link to a page called camelCaseWord</dd>
+
+      <dt># Word ... ####### Word </dt>
+      <dd>Heading from H1-H6</dd>
+
+      <dt>*Word*</dt>
+      <dd>add emphasis to the work (italic)</dd>
+
+      <dt>**Word**</dt>
+      <dd>add bold to the work</dd>
+
+      <dt>~~Word~~</dt>
+      <dd>strikethrough</dd>
+
+      <dt> > Stuff</dt>
+      <dd>Blockquote</dd>
+
+      <dt>`code`</dt>
+      <dd>code</dd>
+
+      <dt>``` mulitline code ````</dt>
+      <dd>multiline block of code</dd>
+
+      <dt>&lt; http://google.com &gt;</dt>
+      <dd>make a link, links are autolinked as well</dd>
+
+      <dt>[this is a link to google]( http://google.com )</dt>
+      <dd>make a link with linktext</dd>
+
+
+      <dt></dt>
+      <dd></dd>
+
+      <dt></dt>
+      <dd></dd>
+
+      <dt></dt>
+      <dd></dd>
+
+
+    </dl>
+  </li>
+</ul>
+<script>
+  const pageName = "{{page_name}}";
+</script>
+
+
+{% endblock %}

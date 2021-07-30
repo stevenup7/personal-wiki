@@ -1,0 +1,35 @@
+dl.not-all-caps dt {
+    text-transform: none;
+    font-weight: bold;
+}
+
+#editbox:focus-visible,
+#editbox:focus,
+#editbox {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    outline: none;
+    resize: none;
+}
+
+body em {
+    color: #f5710b;
+}
+
+
+body :not(pre)>code,
+body :not(pre)>kbd,
+body :not(pre)>samp {
+    color: #f5710b;
+}
+
+a.wiki-link {
+    color: #f5710b;
+}
+
+
+body .uk-logo,
+body .uk-logo:focus,
+body .uk-logo:hover{
+    color: #f5710b;
+}
