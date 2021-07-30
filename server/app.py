@@ -7,20 +7,52 @@ the goal of this project is to crate a quick little wiki and perhaps eventually 
 with various services espeically a local folder and google keep notes
 
 """
-from flask import Flask
-from flask import render_template, request
+
+from flask import Flask, render_template, request, redirect, url_for
+from flask_login import LoginManager
+from flask_dance.contrib.google import make_google_blueprint, google
+from user import WikiUser
 import os
 import glob
+import json
 import markdown
+
+# allow non https (remove this for production
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+app = Flask(__name__, static_folder='../ui')
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+with open('auth_config.json') as config_file:
+    auth_config = json.load(config_file)
+
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "jkdaslf897as87fd*(&*()&(*)&FDS@#E$R")
+app.config["GOOGLE_OAUTH_CLIENT_ID"] = auth_config["web"]["client_id"]
+app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = auth_config["web"]["client_secret"]
+google_bp = make_google_blueprint(scope=[
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'])
+
+#                                   ["profile", "email"])
+app.register_blueprint(google_bp, url_prefix="/login")
 
 DATAFOLDER = "data/"
 FILEEXTENSION = ".md"
 
-app = Flask(__name__, static_folder='../ui')
+@login_manager.user_loader
+def user_loader():
+    resp = google.get("/oauth2/v1/userinfo")
+    print (resp.json())
+
 
 @app.route("/")
-def hello_world():
-    return render_template('default.html', title="personal wiki")
+def loginstate():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v1/userinfo")
+    print (resp.json())
+    return "You are {email} on Google".format(email=resp.json()["email"])
 
 @app.route("/index")
 def index():
