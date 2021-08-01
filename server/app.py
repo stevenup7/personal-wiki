@@ -8,7 +8,7 @@ with various services espeically a local folder and google keep notes
 
 """
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager
 from flask_dance.contrib.google import make_google_blueprint, google
 from user import WikiUser
@@ -24,26 +24,35 @@ app = Flask(__name__, static_folder='../ui')
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+#secret keys are in a non comitted json file
 with open('auth_config.json') as config_file:
     auth_config = json.load(config_file)
 
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "jkdaslf897as87fd*(&*()&(*)&FDS@#E$R")
 app.config["GOOGLE_OAUTH_CLIENT_ID"] = auth_config["web"]["client_id"]
 app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = auth_config["web"]["client_secret"]
-google_bp = make_google_blueprint(scope=[
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email'])
-
-#                                   ["profile", "email"])
-app.register_blueprint(google_bp, url_prefix="/login")
+google_bp = make_google_blueprint(
+    scope=['https://www.googleapis.com/auth/userinfo.profile',
+           'https://www.googleapis.com/auth/userinfo.email'
+    ])
+oapp.register_blueprint(google_bp, url_prefix="/login")
 
 DATAFOLDER = "data/"
 FILEEXTENSION = ".md"
 
 @login_manager.user_loader
-def user_loader():
-    resp = google.get("/oauth2/v1/userinfo")
-    print (resp.json())
+def user_loader(user_id):
+    # TODO: error handling
+    u = new WikiUser()
+    if session["user"]
+        u.is_active = true;
+        u.is_authenticated = true
+        u
+    else:
+        try:
+            resp = google.get("/oauth2/v1/userinfo")
+        catch
+        print (resp.json())
 
 
 @app.route("/")

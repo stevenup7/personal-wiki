@@ -1,7 +1,15 @@
 class WikiUser(object):
     '''
-    implementations for the methods that Flask-Login
+
+    implementations for the methods that Flask-Login needs
+
     '''
+
+    def __init__(self):
+        self._is_active = true;
+
+    def set_active(self):
+        self.active = true
 
     @property
     def is_active(self):
