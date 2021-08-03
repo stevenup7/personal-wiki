@@ -1,6 +1,5 @@
 
-""" ------
-
+"""
 personal wiki server main page
 
 the goal of this project is to crate a quick little wiki and perhaps eventually allow it to sync up
@@ -83,9 +82,17 @@ def content_page(page_name):
     content = read_content_file(page_name)
     return render_template('content-page.html', title=page_name, page_name=page_name, content=content)
 
-""" REST API for page CRUD """
 
 
+"""
+REST API for page CRUD
+
+TODO:
+  move into a module
+  add security
+
+
+"""
 def make_file_path(fname):
     return "{}{}{}".format(DATAFOLDER,fname,FILEEXTENSION)
 
@@ -121,5 +128,5 @@ def content(page_name):
     return os.getcwd()
 
 
-# run the app in debug mode
-app.run(debug=True, use_reloader=True)
+# run the app in debug mode with autoreload turned on
+app.run(host="127.0.0.1", port="5000", debug=True, use_reloader=True)
