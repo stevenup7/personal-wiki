@@ -19,6 +19,7 @@ def init_google_auth(app):
     app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = auth_config["web"]["client_secret"]
 
     # offline = true makes this a long life token
+    # https://github.com/singingwolfboy/flask-dance/issues/35
     google_bp = make_google_blueprint(
         scope=[
             "https://www.googleapis.com/auth/userinfo.profile",

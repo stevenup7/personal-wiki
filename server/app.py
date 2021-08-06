@@ -8,8 +8,7 @@ with various services espeically a local folder and google keep notes
 
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager
-from flask_dance.contrib.google import google
-from auth_google import init_google_auth
+from google_auth import google_auth_module, init_google_auth
 from login_decorator import login_required
 import os
 import glob
@@ -26,6 +25,7 @@ app.secret_key = os.environ.get(
     "FLASK_SECRET_KEY", "jkdaslf897as87fd*(&*()&(*)&FDS@#E$R"
 )
 
+app.register_blueprint(google_auth_module, url_prefix="/google_auth")
 init_google_auth(app)
 
 
@@ -33,34 +33,6 @@ init_google_auth(app)
 def logout():
     session.pop("user", None)
     return redirect(url_for("home"))
-
-
-@app.route("/login")
-def loginstate():
-    if not google.authorized:
-        print("sending to google for login")
-        return redirect(url_for("google.login"))
-    else:
-        print("You am google authed")
-
-    if "user" in session:
-        print("you is logggged in with a session")
-        return redirect(url_for("home"))
-    else:
-        print("getting your details from google")
-        resp = google.get("/oauth2/v1/userinfo")
-        resp = resp.json()
-        if "error" in resp:
-            print("error in your auth process")
-            # something went wrong try auth again
-            # TODO: bad idea ?
-            return redirect(url_for("google.login"))
-        else:
-            print("auth process looks good saving your email")
-            session["user"] = resp["email"]
-            return redirect(url_for("home"))
-
-    return "You are {email} on Google".format(email=resp["email"])
 
 
 @app.route("/")
@@ -96,6 +68,11 @@ def index():
         index_content=content,
         user=user,
     )
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 
 @app.route("/content/<page_name>")
